@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SavedRestaurantListActivity extends AppCompatActivity implements OnStartDragListener {
+
     private DatabaseReference mRestaurantReference;
     private FirebaseRestaurantListAdapter mFirebaseAdapter;
     private ItemTouchHelper mItemTouchHelper;
@@ -51,7 +52,7 @@ public class SavedRestaurantListActivity extends AppCompatActivity implements On
 
         mFirebaseAdapter = new FirebaseRestaurantListAdapter(Restaurant.class,
             R.layout.restaurant_list_item_drag, FirebaseRestaurantViewHolder.class,
-            mRestaurantReference, this, this);
+            query, this, this);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
