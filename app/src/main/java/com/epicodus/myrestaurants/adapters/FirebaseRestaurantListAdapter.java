@@ -3,6 +3,7 @@ package com.epicodus.myrestaurants.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -85,6 +86,7 @@ public class FirebaseRestaurantListAdapter extends FirebaseRecyclerAdapter<Resta
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
                 intent.putExtra("position", viewHolder.getAdapterPosition());
+                Log.d("Adapter Position: ", Integer.toString(viewHolder.getAdapterPosition()));
                 intent.putExtra("restaurants", Parcels.wrap(mRestaurants));
                 mContext.startActivity(intent);
             }

@@ -3,6 +3,7 @@ package com.epicodus.myrestaurants.ui;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.epicodus.myrestaurants.R;
 import com.epicodus.myrestaurants.adapters.RestaurantPagerAdapter;
@@ -29,6 +30,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         mRestaurants = Parcels.unwrap(getIntent().getParcelableExtra("restaurants"));
         int startingPosition = getIntent().getIntExtra("position", 0);
+        Log.d("Starting Pos: ", Integer.toString(startingPosition));
 
         adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
         mViewPager.setAdapter(adapterViewPager);
