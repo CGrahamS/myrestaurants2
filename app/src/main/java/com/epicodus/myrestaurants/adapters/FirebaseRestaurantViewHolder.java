@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.epicodus.myrestaurants.Constants;
 import com.epicodus.myrestaurants.R;
 import com.epicodus.myrestaurants.models.Restaurant;
 import com.epicodus.myrestaurants.ui.RestaurantDetailActivity;
+import com.epicodus.myrestaurants.ui.RestaurantDetailFragment;
 import com.epicodus.myrestaurants.util.ItemTouchHelperViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +35,13 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
     View mView;
     Context mContext;
     public ImageView mRestaurantImageView;
+    private int mOrientation;
 
     public FirebaseRestaurantViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
         mContext = itemView.getContext();
+
     }
 
     public void bindRestaurant(Restaurant restaurant) {
