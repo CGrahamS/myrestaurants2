@@ -27,7 +27,7 @@ public class RestaurantListActivity extends AppCompatActivity implements OnResta
         if (savedInstanceState != null ) {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
-                mRestaurants = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_POSITION));
+                mRestaurants = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_RESTAURANTS));
 
                 if (mPosition != null && mRestaurants != null) {
                     Intent intent = new Intent(this, RestaurantDetailActivity.class);

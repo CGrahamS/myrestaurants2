@@ -33,18 +33,18 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
     private Context mContext;
-    private OnRestaurantSelectedListener mRestaurantSelectedListener;
+    private OnRestaurantSelectedListener mOnRestaurantSelectedListener;
 
     public RestaurantListAdapter(Context context, ArrayList<Restaurant> restaurants, OnRestaurantSelectedListener restaurantSelectedListener) {
         mContext = context;
         mRestaurants = restaurants;
-        mRestaurantSelectedListener = restaurantSelectedListener;
+        mOnRestaurantSelectedListener = restaurantSelectedListener;
     }
 
     @Override
     public RestaurantListAdapter.RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_list_item, parent, false);
-        RestaurantViewHolder viewHolder = new RestaurantViewHolder(view, mRestaurants, mRestaurantSelectedListener);
+        RestaurantViewHolder viewHolder = new RestaurantViewHolder(view, mRestaurants, mOnRestaurantSelectedListener);
         return viewHolder;
     }
 
@@ -58,6 +58,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         return mRestaurants.size();
     }
 
+
+
     public class RestaurantViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Bind(R.id.restaurantImageView) ImageView mRestaurantImageView;
         @Bind(R.id.restaurantNameTextView) TextView mNameTextView;
@@ -66,6 +68,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
         private Context mContext;
         private int mOrientation;
+        private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
+        private OnRestaurantSelectedListener mRestaurantSelectedListener;
 
         public RestaurantViewHolder(View itemView, ArrayList<Restaurant> restaurants, OnRestaurantSelectedListener restaurantSelectedListener) {
             super(itemView);
@@ -75,18 +79,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             mOrientation = itemView.getResources().getConfiguration().orientation;
             mRestaurants = restaurants;
             mRestaurantSelectedListener = restaurantSelectedListener;
+
             if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
                 createDetailFragment(0);
             }
 
             itemView.setOnClickListener(this);
-        }
-
-        private void createDetailFragment(int position) {
-            RestaurantDetailFragment detailFragment = RestaurantDetailFragment.newInstance(mRestaurants, position);
-            FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.restaurantDetailContainer, detailFragment);
-            ft.commit();
         }
 
         public void bindRestaurant(Restaurant restaurant) {
@@ -102,17 +100,24 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             mRatingTextView.setText("Rating: " + restaurant.getRating() + "/5");
         }
 
+        private void createDetailFragment(int position) {
+            RestaurantDetailFragment detailFragment = RestaurantDetailFragment.newInstance(mRestaurants, position);
+            FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.restaurantDetailContainer, detailFragment);
+            ft.commit();
+        }
+
         @Override
         public void onClick(View v) {
             int itemPosition = getLayoutPosition();
             mRestaurantSelectedListener.onRestaurantSelected(itemPosition, mRestaurants);
+
             if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
                 createDetailFragment(itemPosition);
             } else {
                 Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
                 intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
                 intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
-
                 mContext.startActivity(intent);
             }
         }
